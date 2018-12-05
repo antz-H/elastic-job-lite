@@ -1,5 +1,12 @@
 # Elastic-Job - distributed scheduled job solution
 
+#### ElasticJob 完善
+2018.12.5
+-   增加默认对oracle的支持
+    - 增加对oracle数据源的判断，主要是修改控制台分页查询的mysql与oracle的差异com.dangdang.ddframe.job.event.rdb.JobEventRdbSearch 
+    - 对官方使用的sql写法有些不是很规范的DML语句做了修改，修改oracle新增主键的方式com.dangdang.ddframe.job.event.rdb.JobEventRdbStorage
+
+
 [![Build Status](https://secure.travis-ci.org/dangdangdotcom/elastic-job.png?branch=master)](https://travis-ci.org/dangdangdotcom/elastic-job)
 [![Maven Status](https://maven-badges.herokuapp.com/maven-central/com.dangdang/elastic-job/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.dangdang/elastic-job)
 [![Coverage Status](https://coveralls.io/repos/dangdangdotcom/elastic-job/badge.svg?branch=master&service=github)](https://coveralls.io/github/dangdangdotcom/elastic-job?branch=master)
