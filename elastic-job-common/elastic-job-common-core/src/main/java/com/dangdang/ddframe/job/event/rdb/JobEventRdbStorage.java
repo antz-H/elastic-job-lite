@@ -26,6 +26,7 @@ import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
+import java.io.UnsupportedEncodingException;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -73,8 +74,8 @@ final class JobEventRdbStorage {
                     createJobExecutionTable(conn);
                 } else if (DatabaseType.Oracle.name().equals(databaseType.name())) {
                     createJobExecutionTable_Oracle(conn);
-                }else{
-                    throw new RuntimeException("The DataBase ["+ databaseType.name() +"] is not supported !!!") ;
+                } else {
+                    throw new RuntimeException("The DataBase [" + databaseType.name() + "] is not supported !!!");
                 }
             }
         }
@@ -89,8 +90,8 @@ final class JobEventRdbStorage {
                     createJobStatusTraceTable(conn);
                 } else if (DatabaseType.Oracle.name().equals(databaseType.name())) {
                     createJobStatusTraceTable_Oracle(conn);
-                }else{
-                    throw new RuntimeException("The DataBase ["+ databaseType.name() +"] is not supported !!!") ;
+                } else {
+                    throw new RuntimeException("The DataBase [" + databaseType.name() + "] is not supported !!!");
                 }
 
             }
@@ -133,32 +134,32 @@ final class JobEventRdbStorage {
     }
 
     /**
-     * @author antz-H
-     * @description  增加对oracle的支持
-     * @date 2018.12.5
      * @param conn
      * @throws SQLException
+     * @author antz-H
+     * @description 增加对oracle的支持
+     * @date 2018.12.5
      */
     private void createJobExecutionTable_Oracle(final Connection conn) throws SQLException {
-        String dbSchema = "CREATE TABLE `" + TABLE_JOB_EXECUTION_LOG + "` ("
-                + "`id` VARCHAR2(40) NOT NULL, "
-                + "`job_name` VARCHAR2(100) NOT NULL, "
-                + "`task_id` VARCHAR2(255) NOT NULL, "
-                + "`hostname` VARCHAR2(255) NOT NULL, "
-                + "`ip` VARCHAR2(50) NOT NULL, "
-                + "`sharding_item` NUMBER NOT NULL, "
-                + "`execution_source` VARCHAR2(20) NOT NULL, "
-                + "`failure_cause` VARCHAR2(4000) NULL, "
-                + "`is_success` NUMBER NOT NULL, "
-                + "`start_time` DATE NULL, "
-                + "`complete_time` DATE NULL "
-                + ");";
+        String dbSchema = "CREATE TABLE " + TABLE_JOB_EXECUTION_LOG + " ("
+                + "id VARCHAR2(40) NOT NULL, "
+                + "job_name VARCHAR2(100) NOT NULL, "
+                + "task_id VARCHAR2(255) NOT NULL, "
+                + "hostname VARCHAR2(255) NOT NULL, "
+                + "ip VARCHAR2(50) NOT NULL, "
+                + "sharding_item NUMBER NOT NULL, "
+                + "execution_source VARCHAR2(20) NOT NULL, "
+                + "failure_cause VARCHAR2(4000) NULL, "
+                + "is_success NUMBER NOT NULL, "
+                + "start_time DATE NULL, "
+                + "complete_time DATE NULL "
+                + ")";
         try (PreparedStatement preparedStatement = conn.prepareStatement(dbSchema)) {
             preparedStatement.execute();
         }
         // alter table job_execution_log add constraint JOB_EXECUTION_LOG_PRIMARY_KEY primary key(ID);
-        String pkDbSchema = "ALTER TABLE `" + TABLE_JOB_EXECUTION_LOG + "`"
-                + "ADD CONSTRAINT `" + TABLE_JOB_EXECUTION_LOG + "`_PRIMARY_KEY PRIMARY KEY(ID)";
+        String pkDbSchema = "ALTER TABLE " + TABLE_JOB_EXECUTION_LOG + ""
+                + " ADD CONSTRAINT " + TABLE_JOB_EXECUTION_LOG + "_PK PRIMARY KEY(ID)";
         try (PreparedStatement preparedStatement = conn.prepareStatement(pkDbSchema)) {
             preparedStatement.execute();
         }
@@ -166,32 +167,32 @@ final class JobEventRdbStorage {
     }
 
     /**
-     * @author antz-H
-     * @description  增加对oracle的支持
-     * @date 2018.12.5
      * @param conn
      * @throws SQLException
+     * @author antz-H
+     * @description 增加对oracle的支持
+     * @date 2018.12.5
      */
     private void createJobStatusTraceTable_Oracle(final Connection conn) throws SQLException {
-        String dbSchema = "CREATE TABLE `" + TABLE_JOB_STATUS_TRACE_LOG + "` ("
-                + "`id` VARCHAR2(40) NOT NULL, "
-                + "`job_name` VARCHAR2(100) NOT NULL, "
-                + "`original_task_id` VARCHAR2(255) NOT NULL, "
-                + "`task_id` VARCHAR2(255) NOT NULL, "
-                + "`slave_id` VARCHAR2(50) NOT NULL, "
-                + "`source` VARCHAR2(50) NOT NULL, "
-                + "`execution_type` VARCHAR2(20) NOT NULL, "
-                + "`sharding_item` VARCHAR2(100) NOT NULL, "
-                + "`state` VARCHAR2(20) NOT NULL, "
-                + "`message` VARCHAR2(4000) NULL, "
-                + "`creation_time` DATE NULL "
-                + ");";
+        String dbSchema = "CREATE TABLE " + TABLE_JOB_STATUS_TRACE_LOG + " ("
+                + "id VARCHAR2(40) NOT NULL, "
+                + "job_name VARCHAR2(100) NOT NULL, "
+                + "original_task_id VARCHAR2(255)  NULL, "
+                + "task_id VARCHAR2(255) NOT NULL, "
+                + "slave_id VARCHAR2(50) NOT NULL, "
+                + "source VARCHAR2(50) NOT NULL, "
+                + "execution_type VARCHAR2(20) NOT NULL, "
+                + "sharding_item VARCHAR2(100) NOT NULL, "
+                + "state VARCHAR2(20) NOT NULL, "
+                + "message VARCHAR2(4000) NULL, "
+                + "creation_time DATE NULL "
+                + ")";
         try (PreparedStatement preparedStatement = conn.prepareStatement(dbSchema)) {
             preparedStatement.execute();
         }
 
-        String pkDbSchema = "ALTER TABLE `" + TABLE_JOB_STATUS_TRACE_LOG + "`"
-                + "ADD CONSTRAINT `" + TABLE_JOB_STATUS_TRACE_LOG + "`_PRIMARY_KEY PRIMARY KEY(ID)";
+        String pkDbSchema = "ALTER TABLE " + TABLE_JOB_STATUS_TRACE_LOG + ""
+                + " ADD CONSTRAINT " + TABLE_JOB_STATUS_TRACE_LOG + "_PK PRIMARY KEY(ID)";
         try (PreparedStatement preparedStatement = conn.prepareStatement(pkDbSchema)) {
             preparedStatement.execute();
         }
@@ -201,7 +202,7 @@ final class JobEventRdbStorage {
         String dbSchema = "CREATE TABLE `" + TABLE_JOB_STATUS_TRACE_LOG + "` ("
                 + "`id` VARCHAR(40) NOT NULL, "
                 + "`job_name` VARCHAR(100) NOT NULL, "
-                + "`original_task_id` VARCHAR(255) NOT NULL, "
+                + "`original_task_id` VARCHAR(255)  NULL, "
                 + "`task_id` VARCHAR(255) NOT NULL, "
                 + "`slave_id` VARCHAR(50) NOT NULL, "
                 + "`source` VARCHAR(50) NOT NULL, "
@@ -217,7 +218,7 @@ final class JobEventRdbStorage {
     }
 
     private void createTaskIdAndStateIndex(final Connection conn, final String tableName) throws SQLException {
-        String sql = "CREATE INDEX " + TASK_ID_STATE_INDEX + " ON " + tableName + " (`task_id`, `state`);";
+        String sql = "CREATE INDEX " + TASK_ID_STATE_INDEX + " ON " + tableName + " (task_id, state)";
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.execute();
         }
@@ -258,7 +259,7 @@ final class JobEventRdbStorage {
         } catch (final SQLException ex) {
             if (!isDuplicateRecord(ex)) {
                 // TODO 记录失败直接输出日志,未来可考虑配置化
-                log.error("insertJobExecutionEvent exception",ex);
+                log.error("insertJobExecutionEvent exception", ex);
             }
         }
         return result;
@@ -285,15 +286,15 @@ final class JobEventRdbStorage {
             result = true;
         } catch (final SQLException ex) {
             // TODO 记录失败直接输出日志,未来可考虑配置化
-            log.error("updateJobExecutionEventWhenSuccess exception",ex);
+            log.error("updateJobExecutionEventWhenSuccess exception", ex);
         }
         return result;
     }
 
     private boolean insertJobExecutionEventWhenSuccess(final JobExecutionEvent jobExecutionEvent) {
         boolean result = false;
-        String sql = "INSERT INTO `" + TABLE_JOB_EXECUTION_LOG + "` (`id`, `job_name`, `task_id`, `hostname`, `ip`, `sharding_item`, `execution_source`, `is_success`, `start_time`, `complete_time`) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO " + TABLE_JOB_EXECUTION_LOG + " (id, job_name, task_id, hostname, ip, sharding_item, execution_source, is_success, start_time, complete_time) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (
                 Connection conn = dataSource.getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
@@ -314,14 +315,14 @@ final class JobEventRdbStorage {
                 return updateJobExecutionEventWhenSuccess(jobExecutionEvent);
             }
             // TODO 记录失败直接输出日志,未来可考虑配置化
-            log.error("insertJobExecutionEventWhenSuccess exception",ex);
+            log.error("insertJobExecutionEventWhenSuccess exception", ex);
         }
         return result;
     }
 
     private boolean updateJobExecutionEventFailure(final JobExecutionEvent jobExecutionEvent) {
         boolean result = false;
-        String sql = "UPDATE `" + TABLE_JOB_EXECUTION_LOG + "` SET `is_success` = ?, `complete_time` = ?, `failure_cause` = ? WHERE id = ?";
+        String sql = "UPDATE " + TABLE_JOB_EXECUTION_LOG + " SET is_success = ?, complete_time = ?, failure_cause = ? WHERE id = ?";
         try (
                 Connection conn = dataSource.getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
@@ -335,15 +336,15 @@ final class JobEventRdbStorage {
             result = true;
         } catch (final SQLException ex) {
             // TODO 记录失败直接输出日志,未来可考虑配置化
-            log.error("updateJobExecutionEventFailure exception",ex);
+            log.error("updateJobExecutionEventFailure exception", ex);
         }
         return result;
     }
 
     private boolean insertJobExecutionEventWhenFailure(final JobExecutionEvent jobExecutionEvent) {
         boolean result = false;
-        String sql = "INSERT INTO `" + TABLE_JOB_EXECUTION_LOG + "` (`id`, `job_name`, `task_id`, `hostname`, `ip`, `sharding_item`, `execution_source`, `failure_cause`, `is_success`, `start_time`) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO " + TABLE_JOB_EXECUTION_LOG + " (id, job_name, task_id, hostname, ip, sharding_item, execution_source, failure_cause, is_success, start_time) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (
                 Connection conn = dataSource.getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
@@ -364,7 +365,7 @@ final class JobEventRdbStorage {
                 return updateJobExecutionEventFailure(jobExecutionEvent);
             }
             // TODO 记录失败直接输出日志,未来可考虑配置化
-            log.error("insertJobExecutionEventWhenFailure exception",ex);
+            log.error("insertJobExecutionEventWhenFailure exception", ex);
         }
         return result;
     }
@@ -398,7 +399,7 @@ final class JobEventRdbStorage {
             result = true;
         } catch (final SQLException ex) {
             // TODO 记录失败直接输出日志,未来可考虑配置化
-            log.error("addJobStatusTraceEvent exception",ex);
+            log.error("addJobStatusTraceEvent exception", ex);
         }
         return result;
     }
@@ -416,13 +417,27 @@ final class JobEventRdbStorage {
             }
         } catch (final SQLException ex) {
             // TODO 记录失败直接输出日志,未来可考虑配置化
-            log.error("getOriginalTaskId exception",ex);
+            log.error("getOriginalTaskId exception", ex);
         }
         return result;
     }
 
+    /**
+     * 修改下控制字符串长度的方式
+     * 1、mysql5.0以后，varchar(4000),表示最大是4000个字符，所以直接判断长度即可
+     * 2、oracle中varchar(4000)，还是按utf8，汉字按3个字节计算，所以需要考虑下字符串中有汉字的长度计算方式
+     *     这里就采用简单方式，解决该问题，可根据自己的需求做修改设计。
+     *
+     * @param str
+     * @return
+     */
     private String truncateString(final String str) {
-        return !Strings.isNullOrEmpty(str) && str.length() > 4000 ? str.substring(0, 4000) : str;
+        log.info("save to database:{}",str);
+        if (DatabaseType.Oracle.name().equals(databaseType.name())) {
+            return !Strings.isNullOrEmpty(str) && str.length() > 4000 ? str.substring(0, 1300) : str;
+        } else {
+            return !Strings.isNullOrEmpty(str) && str.length() > 4000 ? str.substring(0, 4000) : str;
+        }
     }
 
     List<JobStatusTraceEvent> getJobStatusTraceEvents(final String taskId) {
@@ -441,7 +456,7 @@ final class JobEventRdbStorage {
             }
         } catch (final SQLException | ParseException ex) {
             // TODO 记录失败直接输出日志,未来可考虑配置化
-            log.error("getJobStatusTraceEvents exception",ex);
+            log.error("getJobStatusTraceEvents exception", ex);
         }
         return result;
     }
