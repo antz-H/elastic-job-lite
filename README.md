@@ -14,7 +14,7 @@
      - org.apache.zookeeper
        *因为替换了curator依赖，其默认的版本比较低，所以将原来的`3.5.3-beta`升级到`3.4.9`，必须替换否则会报错，可以参考[博客](https://www.jianshu.com/p/384442962e86)*
      - com.fasterxml.jackson.core
-       *github 官方检测有安全漏洞问题，所以由原先的`2.4.4`升级为`2.8.10`*
+       *github 官方检测有安全漏洞问题，所以由原先的`2.4.4`升级为`2.8.11`*
      - org.apache.mesos
        *github 官方检测有安全漏洞问题，所以由原先的`1.1.0`升级为`1.5.0`*
 
