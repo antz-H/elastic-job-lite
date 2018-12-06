@@ -21,6 +21,7 @@ import com.dangdang.ddframe.job.cloud.scheduler.config.job.CloudJobConfiguration
 import com.dangdang.ddframe.job.cloud.scheduler.config.job.CloudJobConfigurationService;
 import com.dangdang.ddframe.job.cloud.scheduler.config.job.CloudJobExecutionType;
 import com.dangdang.ddframe.job.context.TaskContext;
+import com.dangdang.ddframe.job.event.rdb.DatabaseType;
 import com.dangdang.ddframe.job.reg.base.CoordinatorRegistryCenter;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
@@ -130,6 +131,11 @@ public final class RunningService {
             @Override
             public boolean apply(final TaskContext input) {
                 return input.equals(taskContext);
+            }
+
+            @Override
+            public boolean test(TaskContext input) {
+                return apply(input);
             }
         });
     }

@@ -5,7 +5,18 @@
 -   增加默认对oracle的支持
     - 增加对oracle数据源的判断，主要是修改控制台分页查询的mysql与oracle的差异com.dangdang.ddframe.job.event.rdb.JobEventRdbSearch 
     - 对官方使用的sql写法有些不是很规范的DML语句做了修改，修改oracle新增主键的方式com.dangdang.ddframe.job.event.rdb.JobEventRdbStorage
-
+2018.12.6
+-   更新依赖
+     - com.google.guava:guava
+        *该原先的version`18.0`升级到`25.0-jre`*
+     - org.apache.curator
+        *替换是因为curator-client中引用了低版本的guava，当guava升级到`25.0-j re`后有些方法废弃了，所以需要由原来的`2.10.0`升级到`4.0.1`*
+     - org.apache.zookeeper
+       *因为替换了curator依赖，其默认的版本比较低，所以将原来的`3.5.3-beta`升级到`3.4.9`，必须替换否则会报错，可以参考[博客](https://www.jianshu.com/p/384442962e86)*
+     - com.fasterxml.jackson.core
+       *github 官方检测有安全漏洞问题，所以由原先的`2.4.4`升级为`2.8.10`*
+     - org.apache.mesos
+       *github 官方检测有安全漏洞问题，所以由原先的`1.1.0`升级为`1.5.0`*
 
 [![Build Status](https://secure.travis-ci.org/dangdangdotcom/elastic-job.png?branch=master)](https://travis-ci.org/dangdangdotcom/elastic-job)
 [![Maven Status](https://maven-badges.herokuapp.com/maven-central/com.dangdang/elastic-job/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.dangdang/elastic-job)
